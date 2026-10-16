@@ -155,7 +155,15 @@ def test_live_once_does_not_sleep_or_use_the_network(tmp_path, monkeypatch, caps
     monkeypatch.setattr("trench_momentum.main.DexScreenerClient", client_factory)
     monkeypatch.setattr(
         "trench_momentum.main.collect_solana_snapshots",
-        lambda client: PollBatch(snapshots=[_pair(symbol="MOMO", pair_address="momo")]),
+        lambda client: PollBatch(
+            snapshots=[
+                _pair(
+                    symbol="MOMO",
+                    pair_address="momo",
+                    pair_created_at=datetime.now(timezone.utc) - timedelta(hours=2),
+                )
+            ]
+        ),
     )
 
     def fail_sleep(seconds):
